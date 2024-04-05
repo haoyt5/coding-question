@@ -1,3 +1,6 @@
+# algorithm: move the pointer on the string, *skip non alphabetic and numeric, to check if it's equal
+# time: O(N) linear
+# space: O(1) constant
 class Solution:
     def isPalindrome(self, s: str) -> bool:
         if len(s) < 2:
