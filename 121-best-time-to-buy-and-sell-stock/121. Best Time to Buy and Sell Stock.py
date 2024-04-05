@@ -3,12 +3,12 @@
 # space: O(1) constant (2 variables)
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        min_pc = float('inf') # set to positive infinity
-        max_pf = 0
-        for i, p in enumerate(prices):
-            if p < min_pc:
-                min_pc = p
-            elif p - min_pc > max_pf:
-                max_pf = p - min_pc
+        buy = prices[0] # or set to positive infinity float('inf')
+        profit = 0
+        for i, price in enumerate(prices):
+            if price < buy:
+                buy = price
+            elif price - buy > profit:
+                profit = price - buy
         
-        return max_pf
+        return profit
