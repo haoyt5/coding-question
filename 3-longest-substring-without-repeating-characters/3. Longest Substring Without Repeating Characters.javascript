@@ -1,21 +1,27 @@
 /**
  * @param {string} s
  * @return {number}
- * two pointer (r and l) sliding window
- * set record the subString
- * max record the curMax
+ * two pointer (left and right)
+ * set record the current window
+ * maxLen record the current max length
+ * left pointer will shrink
+ * right pointer will expand
+ * each iteration:
+ * if expand char is dup char in subStr, i++
+ * each iteration right exapnd
+ * each iteration find max between window size and maxLen
  */
  var lengthOfLongestSubstring = function(s) {
-    let i = 0;
+    let left = 0;
     const set = new Set();
-    let max = 0;
-    for (let j = 0; j < s.length; j++) {
-        while(set.has(s[j])){ 
-            set.delete(s[i])
-            i++
+    let maxLen = 0;
+    for (let right = 0; right < s.length; right ++) {
+        while(set.has(s[right])){
+          set.delete(s[left])
+          left++
         }
-        set.add(s[j]);
-        max = Math.max(max, set.size)
+        set.add(s[right]);
+        maxLen = Math.max(maxLen, set.size) // OR (right - left + 1)
     }
-    return max
+    return maxLen
 };
