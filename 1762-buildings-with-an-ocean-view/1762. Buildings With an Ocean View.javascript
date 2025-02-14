@@ -1,19 +1,23 @@
 /**
  * @param {number[]} heights
  * @return {number[]}
- * reverse iteration
- * track the maxHeight
- * use a stack to record the valid heights
+ * the rightmost always have a view
+ * pointer start form right
+ * every iterate should add a "valid" building indices
+ * what is valid? 
+ * - building is taller than rest of the right -> compare w/ tallest so far
+ * - if it's taller
+ * ---- add this building
+ * ---- update the tallest
  */
 var findBuildings = function (heights) {
     let valid = [];
-    let maxHeight = 0; // Track the maximum height seen from the right
-    for (let i = heights.length; i >= 0; i--) {  // Traverse from right to left
-        if (heights[i] > maxHeight) { // if curHeight exceed the max
-            valid.push(i)  // means it has a ocean view
-            maxHeight = heights[i]; // update the tallest seen so far
+    let max = 0;
+    for (let i = heights.length - 1; i >= 0; i--) { // reverse iteration
+        if (heights[i] > max) { // valid building
+            valid.push(i)
+            max = heights[i]
         }
-        /* else -> building is too short to view */
     }
-    return valid.reverse();
-}; 
+    return valid.reverse()
+};
