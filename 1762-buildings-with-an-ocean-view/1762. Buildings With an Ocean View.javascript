@@ -3,8 +3,6 @@
  * @return {number[]}
  * reverse iteration
  * track the maxHeight
- * 
- * 
  * use a stack to record the valid heights
  */
 var findBuildings = function (heights) {
@@ -15,7 +13,7 @@ var findBuildings = function (heights) {
             valid.push(i)  // means it has a ocean view
             maxHeight = heights[i]; // update the tallest seen so far
         }
-        /* else -> building are too short to view */
+        /* else -> building is too short to view */
     }
     return valid.reverse();
 }; 
