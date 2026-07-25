@@ -1,0 +1,16 @@
+function lengthOfLongestSubstring(s: string): number {
+    // Map<char, latestIndex>
+    let seen: Map<string, number> = new Map()
+    let left: number = 0;
+    let max: number = 0;
+    for (let right = 0; right < s.length; right++) {
+        const c = s[right];
+        if (seen.has(c) && seen.get(c)! >= left) {
+            left = seen.get(c)! + 1;
+
+        }
+        seen.set(c, right)
+        max = Math.max(max, right - left + 1)
+    }
+    return max
+};
