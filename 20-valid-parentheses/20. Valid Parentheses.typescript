@@ -1,19 +1,14 @@
 function isValid(s: string): boolean {
-    if (s.length % 2 !== 0) return false
-    const arr: string[] = s.split("");
+    if (s.length % 2 !== 0) return false;
+    const pairs: Map<string, string> = new Map([ ["(", ")"] ,["[","]"], ["{","}"]])
     const stack: string[] = [];
-    const closToOpen: Map<string,string> = new Map();
-    closToOpen.set(")","(");
-    closToOpen.set("]","[");
-    closToOpen.set("}","{");
-    for (const c of arr ) {
-        if (!closToOpen.has(c)) { 
-            stack.push(c);
-        } else { 
-            const flip = closToOpen.get(c)
-            const tail = stack.pop();
-            if ( tail !== flip) return false;
+    for (const char of s) {
+        if( pairs.has(char)) {
+            stack.push(pairs.get(char))
+        } else {
+            if (stack.pop() !== char) return false;
         }
+
     }
     return stack.length === 0;
 };
