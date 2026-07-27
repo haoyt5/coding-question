@@ -1,0 +1,20 @@
+function isValid(s: string): boolean {
+    if (s.length === 0) return false
+    const arr: string[] = s.split("")
+    const stack: string[] = []
+    const counter: Map<string,string> = new Map();
+    counter.set(")","(")
+    counter.set("]","[")
+    counter.set("}","{")
+    for (const c of arr ) {
+        if (!counter.has(c)) { 
+            stack.push(c)
+        } else { 
+            const flip = counter.get(c)
+            const tail = stack.pop()
+            if ( tail !== flip) return false
+
+        }
+    }
+    return stack.length === 0
+};
