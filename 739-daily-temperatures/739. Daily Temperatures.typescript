@@ -5,12 +5,10 @@ function dailyTemperatures(temperatures: number[]): number[] {
 
     for (let i = 0; i < temperatures.length; i++) {
         while(stack.length > 0 && temperatures[i]> temperatures[stack[stack.length - 1]]){
-            const pendIdx: number = stack.pop()
-            answers[pendIdx] = i - pendIdx;
-
+            const consumedIdx: number = stack.pop();
+            answers[consumedIdx] = i - consumedIdx;
         }
-        stack.push(i)
-
+        stack.push(i);
     }
     return answers;
 };
