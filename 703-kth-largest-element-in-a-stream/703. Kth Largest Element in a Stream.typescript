@@ -49,7 +49,7 @@ class MyMinHeap {
 
 class KthLargest {
     private limit: number;
-    private heap: MinHeap<any>;
+    private heap: MinHeap<number>;
     constructor(k: number, nums: number[]) {
         this.limit = k;
         this.heap = new MinHeap();
