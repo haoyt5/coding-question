@@ -49,10 +49,10 @@ class MyMinHeap {
 
 class KthLargest {
     private limit: number;
-    private heap: MyMinHeap;
+    private heap: MinHeap<any>;
     constructor(k: number, nums: number[]) {
         this.limit = k;
-        this.heap = new MyMinHeap();
+        this.heap = new MinHeap();
         for (const n of nums) {
             this.add(n);
         } 
@@ -63,8 +63,9 @@ class KthLargest {
         if (this.heap.size() > this.limit) {
             this.heap.pop();
         }
-        return this.heap.peek();
+        return this.heap.root();
     }
+
 }
 
 /**
