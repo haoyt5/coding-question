@@ -1,0 +1,11 @@
+
+function minMeetingRooms(intervals: number[][]): number {
+    if (intervals.length === 0) return 0
+    intervals.sort((a, b)=> a[0] - b[0]);
+    const rooms = new MinHeap<number>() // store with occupied end time 
+    for (const [ start, end ] of intervals) {
+        if(rooms.size() > 0 && rooms.root() <= start ) rooms.pop();
+        rooms.push(end)
+    }
+    return rooms.size()
+};
