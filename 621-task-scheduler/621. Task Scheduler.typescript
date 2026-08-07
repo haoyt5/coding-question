@@ -1,0 +1,15 @@
+function leastInterval(tasks: string[], n: number): number {
+    const freq: Map<string, number> = new Map();
+    for (const t of tasks) {
+        freq.set(t, (freq.get(t) ?? 0 )+ 1)
+    }
+    const maxCount: number = Math.max(...freq.values())
+    let numMaxTasks: number = 0;
+    for (const count of freq.values()) {
+        if (count === maxCount) numMaxTasks++;
+    }
+
+    const formula: number = (maxCount - 1) * (n + 1) + numMaxTasks
+
+    return Math.max(tasks.length, formula)
+};
