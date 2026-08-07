@@ -1,6 +1,6 @@
 function minEatingSpeed(piles: number[], h: number): number {
     let left: number = 0;
-    let right: number = piles.reduce((a, b)=> Math.max(a, b),0)
+    let right: number = Math.max(...piles)
 
 
     const hrsNeeded = (k: number): number => {
