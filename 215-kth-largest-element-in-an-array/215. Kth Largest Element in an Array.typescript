@@ -1,0 +1,9 @@
+function findKthLargest(nums: number[], k: number): number {
+    const heap: MinHeap<number> = new MinHeap<number>();
+
+    for (const num of nums) {
+        heap.push(num)
+        if (heap.size() > k  ) heap.pop()
+    }
+    return heap.root()
+};
