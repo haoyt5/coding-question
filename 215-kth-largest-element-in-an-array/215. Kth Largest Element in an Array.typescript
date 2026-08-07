@@ -1,3 +1,7 @@
+/*
+T O(N log K)
+S O(K)
+*/
 function findKthLargest(nums: number[], k: number): number {
     const heap: MinHeap<number> = new MinHeap<number>();
 
