@@ -1,0 +1,31 @@
+function findRedundantConnection(edges: number[][]): number[] {
+    const n: number = edges.length;
+    const parent: number[] = Array.from({length: n+1}, (_, i)=> i)
+    const rank: number[] = new Array(n+1).fill(0);
+    
+    function find(v: number): number {
+        if (parent[v]!== v) {
+            parent[v] =  find(parent[v])
+        }
+        return parent[v]
+    }
+
+    function union(x: number, y: number): boolean {
+        const rx: number = find(x);
+        const ry: number = find(y);
+        if (rx === ry) return false;
+        if (rank[rx]< rank[ry]) {
+            parent[rx] = ry;
+        } else if (rank[rx] > rank[ry]) {
+            parent[ry] = rx;
+        } else {
+            parent[ry] = rx;
+            rank[rx]++;
+        }
+        return true;
+    }
+    for (const [u, v] of edges) {
+        if (!union(u, v)) return [u, v]
+    }
+    return []
+};
