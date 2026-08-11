@@ -1,61 +1,65 @@
-
 function accountsMerge(accounts: string[][]): string[][] {
-    const parent: Map<string, string> = new Map() // email -> root email
+    // each email as node 
+    const parent: Map<string, string> = new Map(); // email -> parent
     const rank: Map<string, number> = new Map(); // email -> rank
-    const emailToName: Map<string, string> = new Map()
-    function find(x: string): string {
-        if (parent.get(x) !== x) {
+    const emailToName: Map<string, string> = new Map();  // email -> name
+    // (email) => root email
+    const find = (x: string): string  => {
+        if (parent.get(x)! !== x)  {
             parent.set(x, find(parent.get(x)!))
         }
-        return parent.get(x)!;
+        return parent.get(x)
     }
-
-    function union(a: string, b: string): void {
-        const rtA: string = find(a)
-        const rtB: string = find(b)
-        if (rtA === rtB) return ;
-        const rankA: number = rank.get(rtA)!;
-        const rankB: number = rank.get(rtB)!;
-        if(rankA< rankB){
-            parent.set(rtA, rtB)
-        } else if (rankA > rankB){
-            parent.set(rtB, rtA)
+    // (a, b) => void{ short  merge with tall through root}
+    const union = (a: string, b: string): void => {
+        const rootA: string = find(a);
+        const rootB: string = find(b);
+        const rankA: number = rank.get(rootA)!;
+        const rankB: number = rank.get(rootB)!;
+        if (rootA === rootB) return;
+        if (rankA < rankB) {
+            parent.set(rootA, rootB)
+        } else if (rankA > rankB) {
+            parent.set(rootB, rootA)
         } else {
-            parent.set(rtB, rtA)
-            rank.set(rtA, rankA + 1)
+            parent.set(rootB, rootA)
+            rank.set(rootA, rankA + 1)
         }
+
     }
 
-
+    // init each email as node, union node
     for (const account of accounts) {
-        const name:string = account[0]; 
+        const name = account[0];
         for (let i = 1; i < account.length; i++) {
-            const email: string = account[i];
-            emailToName.set(email, name); // distinct email -> name
-
-            if(!parent.has(email)) {
+            const email = account[i]
+            // init
+            emailToName.set(email, name)
+            if (!parent.has(email)) {
                 parent.set(email, email)
                 rank.set(email, 0)
             }
-
+            // union
             union(account[1], email)
         }
     }
-
-    const group: Map<string, string[]> = new Map(); // email -> ['emailA']
+    // group the email by root email 
+    // root -> [emails]
+    const groups: Map<string, string[]> = new Map();
     for (const email of parent.keys()) {
-        const root: string = find(email)
-        if(!group.has(root)) {
-            group.set(root, [])
+        const root: string = find(email);
+        if (!groups.has(root)){
+            groups.set(root, [])
         }
-        group.get(root)!.push(email)
+        groups.get(root)!.push(email)
     }
 
-    const result: string[][] = []; // [name, ...emsil]
-
-    for (const [rt, emls] of group) {
-        emls.sort()
-        result.push([emailToName.get(rt)!, ...emls])
+    // build result  
+    // name -> [emails.sort()] 
+    const results: string[][] = [];
+    for (const [root, emails] of groups) {
+        emails.sort();
+        results.push([emailToName.get(root)!, ...emails])
     }
-    return result;
+    return results;
 };
