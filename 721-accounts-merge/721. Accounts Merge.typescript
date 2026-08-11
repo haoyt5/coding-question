@@ -8,7 +8,7 @@ function accountsMerge(accounts: string[][]): string[][] {
         if (parent.get(x)! !== x)  {
             parent.set(x, find(parent.get(x)!))
         }
-        return parent.get(x)
+        return parent.get(x)!;
     }
     // (a, b) => void{ short  merge with tall through root}
     const union = (a: string, b: string): void => {
