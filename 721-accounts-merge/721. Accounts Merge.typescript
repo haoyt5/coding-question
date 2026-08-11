@@ -1,0 +1,61 @@
+
+function accountsMerge(accounts: string[][]): string[][] {
+    const parent: Map<string, string> = new Map() // email -> root email
+    const rank: Map<string, number> = new Map(); // email -> rank
+    const emailToName: Map<string, string> = new Map()
+    function find(x: string): string {
+        if (parent.get(x) !== x) {
+            parent.set(x, find(parent.get(x)!))
+        }
+        return parent.get(x)!;
+    }
+
+    function union(a: string, b: string): void {
+        const rtA: string = find(a)
+        const rtB: string = find(b)
+        if (rtA === rtB) return ;
+        const rankA: number = rank.get(rtA)!;
+        const rankB: number = rank.get(rtB)!;
+        if(rankA< rankB){
+            parent.set(rtA, rtB)
+        } else if (rankA > rankB){
+            parent.set(rtB, rtA)
+        } else {
+            parent.set(rtB, rtA)
+            rank.set(rtA, rankA + 1)
+        }
+    }
+
+
+    for (const account of accounts) {
+        const name:string = account[0]; 
+        for (let i = 1; i < account.length; i++) {
+            const email: string = account[i];
+            emailToName.set(email, name); // distinct email -> name
+
+            if(!parent.has(email)) {
+                parent.set(email, email)
+                rank.set(email, 0)
+            }
+
+            union(account[1], email)
+        }
+    }
+
+    const group: Map<string, string[]> = new Map(); // email -> ['emailA']
+    for (const email of parent.keys()) {
+        const root: string = find(email)
+        if(!group.has(root)) {
+            group.set(root, [])
+        }
+        group.get(root)!.push(email)
+    }
+
+    const result: string[][] = []; // [name, ...emsil]
+
+    for (const [rt, emls] of group) {
+        emls.sort()
+        result.push([emailToName.get(rt)!, ...emls])
+    }
+    return result;
+};
