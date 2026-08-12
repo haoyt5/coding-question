@@ -1,0 +1,38 @@
+function networkDelayTime(times: number[][], n: number, k: number): number {
+    // 1. build adj graph Map<srcNode, [tgNode, weight][]>
+    const graph = new Map<number, number[][]>();
+    for (const [srcNode, tgNode, weight] of times) {
+        if (!graph.has(srcNode)) graph.set(srcNode, []);
+        graph.get(srcNode)!.push([tgNode, weight]);
+    }
+
+    // 2. min heap [cost, node]
+    const minHeap = new MinHeap<[number, number]>((a)=> a[0]);
+    minHeap.push([0, k]);
+
+    // 3. record settled node and its distance
+    const visited = new Set<number>();
+    const dist = new Map<number, number>(); // dist[node] -> min cost from k 
+
+    // 5. dijkstra
+    while (!minHeap.isEmpty()) {
+        const [cost, node] = minHeap.pop();
+        if(visited.has(node)) continue;
+        visited.add(node)
+        dist.set(node, cost)
+
+        for (const [neighbor, weight] of (graph.get(node) ?? [])) {
+            if (!visited.has(neighbor)) {
+                minHeap.push([cost + weight, neighbor])
+            }
+        }
+    }
+    
+    if (dist.size < n )return -1
+
+    let maxDist: number = 0;
+    for (const d of dist.values()) {
+        maxDist = Math.max(maxDist, d);
+    }
+    return maxDist;
+};
