@@ -1,0 +1,36 @@
+function findOrder(numCourses: number, prerequisites: number[][]): number[] {
+    // build adj adj[i] -> [course1, course2];  complete course i(pre) unlock a list of course
+    const adj: Map<number, number[]> = new Map();
+
+    // build indegree indegree[i] -> number; number of pre requisite couse need to take before course i
+    const indegree: Map<number, number> = new Map();
+
+    for (const [ course, pre ] of prerequisites) {
+        if (!adj.has(pre)) adj.set(pre, []);
+        if(!indegree.has(course)) indegree.set(course, 0);
+        adj.get(pre)!.push(course)
+        indegree.set(course, indegree.get(course)! + 1)
+    }
+
+
+    // BFS seed with course with zero prerequisite
+    let queue: number[] = [];
+    for (let i = 0; i < numCourses; i++) {
+        const course: number = i;
+        if ((indegree.get(course) ?? 0) === 0) queue.push(course)
+    }
+  
+    // collect the course taking order in array
+    const result: number[] = [];
+    while(queue.length > 0) {
+        const completed: number = queue.shift();
+        result.push(completed);
+        for (const unlock of (adj.get(completed) ?? [])) {
+            const update = indegree.get(unlock) - 1;
+            if (update === 0) queue.push(unlock);
+            indegree.set(unlock, update)
+        }
+    }
+    // check number of course taken and numCourse match or not
+    return result.length === numCourses ? result : [];
+};
