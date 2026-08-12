@@ -1,0 +1,28 @@
+function canFinish(numCourses: number, prerequisites: number[][]): boolean {
+    // adjacency list; index mean course  [[4,5]] after course 0 can take course 4 or 5
+    const adj: number[][] = new Array(numCourses).fill(null).map(()=>[]);
+    // indegree; pointer inward prerequsite count
+    const indegree: number[] = new Array(numCourses).fill(0)
+
+    for (const [course, prereq] of prerequisites ) {
+        adj[prereq].push(course);
+        indegree[course]++
+    }
+    // BFS queue  with indegree zero 
+    const queue: number[] = [];
+    for (let i = 0; i < indegree.length; i++) {
+        const count: number = indegree[i]
+        if(count === 0) queue.push(i)
+    }
+    // process BFS count taken
+    let taken: number = 0;
+    while(queue.length > 0) {
+        const course: number = queue.shift();
+        taken++;
+        for (const next of adj[course]) {
+            indegree[next]--
+            if (indegree[next]===0) queue.push(next)
+        }
+    }
+    return taken === numCourses
+};
