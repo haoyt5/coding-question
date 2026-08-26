@@ -1,0 +1,23 @@
+function minAvailableDuration(slots1: number[][], slots2: number[][], duration: number): number[] {
+    slots1.sort((a, b)=> a[0] - b[0]);
+    slots2.sort((a, b)=> a[0] - b[0]);
+    let i: number = 0;
+    let j: number = 0;
+
+    while(i < slots1.length && j < slots2.length) {
+        const oStart: number = Math.max(slots1[i][0], slots2[j][0]);
+        const oEnd: number = Math.min(slots1[i][1], slots2[j][1]);
+
+        if (oEnd - oStart >= duration) {
+            return [oStart, oStart + duration]
+        }
+
+        if (slots1[i][1] < slots2[j][1]) {
+            i++
+        } else {
+            j++
+        }
+
+    }
+    return [];
+};
