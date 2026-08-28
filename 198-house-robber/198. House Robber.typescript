@@ -1,0 +1,15 @@
+function rob(nums: number[]): number {
+    if (nums.length === 1) return nums[0];
+
+    let prev2: number = 0;
+    let prev1: number = 0;
+
+    for (let i = 0; i < nums.length; i++) {
+        const robCurr: number = prev2 + nums[i];
+        const skipCurr: number = prev1;
+        const current = Math.max(robCurr, skipCurr);
+        prev2 = prev1;
+        prev1 = current;
+    }
+    return prev1
+};
