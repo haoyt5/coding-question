@@ -1,0 +1,18 @@
+function rob(nums: number[]): number {
+    if (nums.length === 1) return nums[0];
+    if (nums.length === 2) return Math.max(nums[0], nums[1]);
+
+    function robLinear(start: number, end: number): number {
+        let prev2: number = 0;
+        let prev1: number = 0;
+        for (let i = start; i <= end; i++) {
+            const current: number = Math.max(prev2 + nums[i], prev1);
+            prev2 = prev1;
+            prev1 = current;
+        }
+        return prev1
+    }
+    const opA: number = robLinear(0, nums.length -2);
+    const opB: number = robLinear(1, nums.length -1);
+    return Math.max(opA, opB)
+};
