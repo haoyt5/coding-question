@@ -1,0 +1,19 @@
+function twoSum(numbers: number[], target: number): number[] {
+     // Two pointers: one at each end of the sorted array
+  // Array<number>  indices (0-based internally)
+  let left = 0;                      // start of array
+  let right = numbers.length - 1;   // end of array
+
+  while (left < right) {
+    const sum = numbers[left] + numbers[right];
+
+    if (sum === target) {
+      return [left + 1, right + 1];  // convert 0-indexed → 1-indexed
+    } else if (sum > target) {
+      right--;   // sum too large: move right pointer left to get smaller value
+    } else {
+      left++;    // sum too small: move left pointer right to get larger value
+    }
+  }
+  // Problem guarantees a solution exists, so we never reach here
+};
