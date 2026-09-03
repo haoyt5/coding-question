@@ -1,0 +1,13 @@
+function carFleet(target: number, position: number[], speed: number[]): number {
+    if (position.length <= 0) return 0
+    const cars = position.map((p, i)=> [p, speed[i]])
+    cars.sort((a, b)=> b[0] -a[0]) // dec by position (closer to target)
+    const stack: number[] = []
+    for (const [pos, sp] of cars){
+        const time = (target - pos) / sp;
+        if (stack.length === 0 || time > stack[stack.length - 1]) {
+            stack.push(time)
+        }
+    }
+    return stack.length
+};
