@@ -1,71 +1,21 @@
-class MyMinHeap {
-    private heap: number[] = [];
-
-    size(): number {
-        return this.heap.length;
-    }
-
-    peek():number {
-        return this.heap[0]
-    }
-
-    push(val: number): void {
-        this.heap.push(val);
-        this.bubbleUp(this.heap.length - 1);
-    }
-    pop(): number {
-        const root: number = this.heap[0];
-        const leaf: number = this.heap.pop() as number;
-        if(this.heap.length > 0) {
-            this.heap[0] = leaf;
-            this.bubbleDown(0);
-        }
-        return root;
-    }
-    private bubbleUp(i: number): void {
-        while(i > 0) {
-            const parent = (i - 1) >> 1;
-            if(this.heap[parent] <= this.heap[i]) break;
-            [this.heap[parent], this.heap[i]] = [this.heap[i], this.heap[parent]]
-            i = parent;
-        }
-    }
-    private bubbleDown(i: number): void {
-        const n: number = this.heap.length;
-        while(true){
-            let smallest: number = i;
-            const l: number = 2 * i + 1
-            const r: number = 2 * i + 2
-            if (l < n && this.heap[l] < this.heap[smallest]) smallest = l;
-            if (r < n && this.heap[r] < this.heap[smallest]) smallest = r;
-            if (smallest === i) break;
-            [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
-            i = smallest;
-        } 
-
-
-    }
-}
-
 class KthLargest {
-    private limit: number;
-    private heap: MinHeap<number>;
+     heap: MinHeap<number>;
+     limit: number;
     constructor(k: number, nums: number[]) {
         this.limit = k;
         this.heap = new MinHeap();
-        for (const n of nums) {
-            this.add(n);
-        } 
+        for (const num of nums) {
+            this.heap.push(num)
+        }
     }
 
     add(val: number): number {
-        this.heap.push(val);
-        if (this.heap.size() > this.limit) {
-            this.heap.pop();
+        this.heap.push(val)
+        while (this.heap.size()> this.limit) {
+            this.heap.pop()
         }
-        return this.heap.root();
+        return this.heap.top()
     }
-
 }
 
 /**
