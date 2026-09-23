@@ -1,0 +1,28 @@
+function partition(s: string): string[][] {
+    const result: string[][] = [];        // O(1) — output not counted in aux space
+  const path: string[] = [];            // O(n) — at most n pieces deep
+
+  function isPal(l: number, r: number): boolean {
+    while (l < r) {                     // O(n) per call — two pointers meet in middle
+      if (s[l] !== s[r]) return false;
+      l++; r--;
+    }
+    return true;
+  }
+
+  function backtrack(start: number): void {       // recursion depth ≤ n → O(n) stack
+    if (start === s.length) {
+      result.push([...path]);                     // O(n) copy per partition found
+      return;
+    }
+    for (let end = start; end < s.length; end++) { // up to n choices per level
+      if (!isPal(start, end)) continue;            // O(n) check (O(1) with DP table)
+      path.push(s.slice(start, end + 1));          // O(n) slice
+      backtrack(end + 1);
+      path.pop();                                  // O(1)
+    }
+  }
+
+  backtrack(0);
+  return result;
+};
