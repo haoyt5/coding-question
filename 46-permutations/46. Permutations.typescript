@@ -1,0 +1,30 @@
+function permute(nums: number[]): number[][] {
+    const n = nums.length;
+    const result = [];
+    const path = [];
+    const used = new Array(n).fill(false); 
+
+ function backtrack() {
+    // Base case: path has n numbers → one complete permutation
+    if (path.length === n) {
+      result.push([...path]);           // spread creates a NEW array snapshot
+      return;
+    }
+
+    // Try every number for the next slot
+    for (let i = 0; i < n; i++) {
+      if (used[i]) continue;            // can't reuse a number in the same permutation
+
+      used[i] = true;                   // mark
+      path.push(nums[i]);               // place it
+
+      backtrack();                      // fill the remaining slots
+
+      path.pop();                       // remove it → path back to previous state
+      used[i] = false;                  // unmark → available for sibling branches
+    }
+  }
+
+  backtrack();
+  return result;
+};
