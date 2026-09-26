@@ -1,0 +1,15 @@
+function minCostClimbingStairs(cost: number[]): number {
+     const n = cost.length;                 // O(1) time | O(1) space
+  let prev2 = 0;                         // O(1)      | O(1)  dp[i-2]
+  let prev1 = 0;                         // O(1)      | O(1)  dp[i-1]
+
+  for (let i = 2; i <= n; i++) {         // runs n-1 times → O(n) total
+    const cur = Math.min(                // O(1) per iteration
+      prev1 + cost[i - 1],               // O(1) array index read
+      prev2 + cost[i - 2],               // O(1)
+    );
+    prev2 = prev1;                       // O(1)
+    prev1 = cur;                         // O(1)
+  }
+  return prev1;                          // O(1)
+};
